@@ -1,5 +1,5 @@
 "use client"
-import { UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import React, { useEffect } from 'react'
 
 const Home = () => {
@@ -10,8 +10,12 @@ const Home = () => {
 
   return (
     <div>
-      <p>Home</p>
-      {/* <UserButton afterSwitchSessionUrl='/'/> */}
+      <SignedIn>
+        Home Page
+      </SignedIn>
+      <SignedOut>
+        Login Page
+      </SignedOut>
       </div>
   )
 }

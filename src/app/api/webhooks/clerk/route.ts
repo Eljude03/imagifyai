@@ -61,8 +61,8 @@ const {id, email_addresses, image_url, first_name, last_name, username} = evt.da
     const user = {
         clerkId: id,
         email: email_addresses[0].email_address,
-        username: username!,
-        photo: image_url!,
+        userName: username!,
+        phote: image_url!,
         firstName: first_name!,
         lastName: last_name!,
     }

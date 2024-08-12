@@ -1,3 +1,4 @@
+
 import Header from '@/components/shared/Header'
 import React from 'react'
 import TransformationForm from '@/components/shared/TransformationForm'
@@ -20,12 +21,15 @@ const AddTransformationTypePage = async ({params: {type}}: SearchParamProps) => 
     <>
       <Header title={transformation.title} subtitle={transformation.subTitle} />
 
+    <section className='mt-10'>
+
       <TransformationForm 
       action='Add'
       userId={userId}
       type={transformation.type as TransformationTypeKey}
       creditBalance={user.creditBalance}
       />
+      </section>
     </>
   );
 }
