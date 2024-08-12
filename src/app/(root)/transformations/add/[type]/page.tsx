@@ -3,18 +3,18 @@ import React from 'react'
 import TransformationForm from '@/components/shared/TransformationForm'
 import { transformationTypes } from '@/constants'
 
-import { getUserById } from '@/lib/actions/user.actions'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
+import { getUserById } from '@/actions/user.actions'
 
 
 const AddTransformationTypePage = async ({params: {type}}: SearchParamProps) => {
   const transformation = transformationTypes[type];
-  // const {userId} = auth()
+  const {userId} = auth()
 
-  // if(!userId) redirect('/sign-in')
+  if(!userId) redirect('/sign-in')
 
-  // const user = await getUserById(userId)
+  const user = await getUserById(userId)
 
   return (
     <>
