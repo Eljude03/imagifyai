@@ -72,7 +72,7 @@ const {id, email_addresses, image_url, first_name, last_name, username} = evt.da
     const newUser = await createtUser(user)
 
     if(newUser) {
-        await clerkClient.users.updateUserMetadata(id, {
+        await clerkClient().users.updateUserMetadata(id, {
             publicMetadata: {
                 userId: newUser._id
             }
