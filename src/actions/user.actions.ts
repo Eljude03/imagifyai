@@ -4,6 +4,7 @@ import User from "@/modals/user.modal"
 import { connectToDatabase } from "@/app/database/mongoose"
 import { revalidatePath } from "next/cache"
 import { handleError } from "@/lib/utils"
+import mongoose from 'mongoose';
 
 
 export async function  createtUser(user: CreateUserParams) {
@@ -80,9 +81,11 @@ export async function getUserById(userId: string) {
   export async function updateCredits(userId: string, creditFee: number) {
     try {
       await connectToDatabase();
+
+      const userIdObject = new mongoose.Types.ObjectId(userId);
   
       const updatedUserCredits = await User.findOneAndUpdate(
-        { _id: userId },
+        { _id: userIdObject },
         { $inc: { creditBalance: creditFee }},
         { new: true }
       )
