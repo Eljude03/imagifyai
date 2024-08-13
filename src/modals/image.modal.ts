@@ -13,7 +13,7 @@ export interface ImageTypes extends Document {
     color?: string;
     prompt?: string;
     author?: {
-        _id: string;
+        clerkId: string;
         firstName: string;
         lastName: string
     }
