@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -34,6 +34,7 @@ import TransformedImage from './TransformedImage'
 import { getCldImageUrl } from 'next-cloudinary'
 import { addImage, updateImage } from '@/actions/image.actions'
 import { useRouter } from 'next/navigation'
+import { InsufficientCreditsModal } from './InsuficientCreditsModal'
 
 export const formSchema = z.object({
   title: z.string(),
@@ -174,15 +175,21 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
         setNewTransformation(null)
 
         startTransition(async () => {
+          console.log(userId)
           await updateCredits(userId, creditFee)
         })
       }
         
-
+  useEffect(()=> {
+    if(image && (type === 'restore' || type === 'removeBackground')) {
+      setNewTransformation(transformationType.config)
+    }
+  }, [image, transformationType.config, type])
       
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal/>}
         <CustomField
           control={form.control}
           name="title"
@@ -200,8 +207,8 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
             render={({ field }) => (
               <Select
                 onValueChange={(value) => {
-                  onSelectFieldHandler(value, field.onChange);
-                }}
+                  onSelectFieldHandler(value, field.onChange)}}
+                  value={field.value}
               >
                 <SelectTrigger className="select-field">
                   <SelectValue placeholder="Select size" />

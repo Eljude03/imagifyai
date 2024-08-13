@@ -12,11 +12,7 @@ export interface ImageTypes extends Document {
     aspectRatio?: string;
     color?: string;
     prompt?: string;
-    author?: {
-        clerkId: string;
-        firstName: string;
-        lastName: string
-    }
+    author?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -62,8 +58,7 @@ const ImageSchema = new Schema(
             type: String
         },
         author: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+            type: String
         },
         createdAt: {
             type: Date,

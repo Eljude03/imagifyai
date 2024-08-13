@@ -6,13 +6,7 @@ import Image from "@/modals/image.modal"
 import User from "@/modals/user.modal"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-
-const populateUser = (query: any) => 
-    query.populate({
-        path: 'author',
-        model: User,
-        select: 'clerkId firstName lastName'
-    })
+import {v2 as cloudinary} from 'cloudinary'
 
 
 // Add Image
@@ -26,7 +20,7 @@ export async function addImage({image, userId, path}: AddImageParams) {
 
         const newImage = await Image.create({
             ...image,
-            author: author._id
+            author: author.clerkId
         })
 
         revalidatePath(path)
@@ -82,11 +76,69 @@ export async function getImageById(imageId: string) {
     try{
         await connectToDatabase()
 
-        const image = await populateUser(Image.findById(imageId))
+        const image = await Image.findById(imageId)
 
         if(!image) throw new Error("Image not found")
 
         return JSON.parse(JSON.stringify(image))
+
+    } catch(error) {
+        console.log(error)
+        handleError(error)
+    }
+}
+
+//Get Images
+export async function getAllImages({limit = 9, page = 1, searchQuery = ''}: {
+    limit?: number;
+    page: number;
+    searchQuery?: string;
+}) {
+    try{
+        await connectToDatabase()
+        
+        cloudinary.config({
+            cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+            secure: true,
+        })
+
+        let expression = 'folder=imagifyai'
+
+        if(searchQuery) {
+            expression += ` AND ${searchQuery}`
+        }
+
+        const {resources} = await cloudinary.search.expression(expression).execute()
+
+        const resourceIds = resources.map((resource: any) => resource.public_id)
+
+        let query = {}
+
+        if(searchQuery) {
+            query = {
+                publicId: {
+                    $in: resourceIds
+                }
+            }
+        }
+
+        const skipAmount = (Number(page) - 1) * limit;
+
+        const images = await Image.find(query)
+            .sort({updatedAt: -1})
+            .skip(skipAmount)
+            .limit(limit);
+        
+        const totalImages = await Image.find(query).countDocuments();
+        const savedImages = await Image.find().countDocuments()
+
+        return {
+            data: JSON.parse(JSON.stringify(images)),
+            totalPage: Math.ceil(totalImages / limit),
+            savedImages,
+        }
 
     } catch(error) {
         console.log(error)
