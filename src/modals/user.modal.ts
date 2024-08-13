@@ -1,9 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
-    _id: {
-        type: String,
-    },
     clerkId: {
         type: String,
         required: true,
