@@ -62,7 +62,7 @@ const {id, email_addresses, image_url, first_name, last_name, username} = evt.da
         clerkId: id,
         email: email_addresses[0].email_address,
         userName: username!,
-        phote: image_url!,
+        photo: image_url!,
         firstName: first_name!,
         lastName: last_name!,
     }

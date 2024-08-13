@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache"
 import { handleError } from "@/lib/utils"
 
 
-export async function  createtUser(user: any) {
+export async function  createtUser(user: CreateUserParams) {
     try{
         await connectToDatabase()
 
