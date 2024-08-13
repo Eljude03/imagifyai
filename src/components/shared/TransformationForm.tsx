@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input"
 import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } from '@/constants'
 import { CustomField } from './CustomField'
 import { AspectRatioKey, debounce, deepMergeObjects } from '@/lib/utils'
-import { updateCredits } from '@/actions/user.actions'
+import { getUserById, updateCredits } from '@/actions/user.actions'
 import MediaUploader from './MediaUploader'
 import TransformedImage from './TransformedImage'
 import { getCldImageUrl } from 'next-cloudinary'
@@ -53,6 +53,17 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
   const [transformationConfig, setTransformationConfig] = useState(config)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const [user, setUser] = useState<any>('')
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const fetchedUser = await getUserById(userId)
+      setUser(fetchedUser)
+    }
+
+    fetchUser()
+  }, [])
+ 
 
     const initialValues = data && action === 'Update' ? {
         title: data?.title,
@@ -175,8 +186,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
         setNewTransformation(null)
 
         startTransition(async () => {
-          console.log(userId)
-          await updateCredits(userId, creditFee)
+          await updateCredits(user._id, creditFee)
         })
       }
         

@@ -84,7 +84,7 @@ export async function getUserById(userId: string) {
       console.log(userId)
 
       const updatedUserCredits = await User.findOneAndUpdate(
-        { clerkId: userId},
+        { _id: userId},
         { $inc: { creditBalance: creditFee }},
         { new: true }
       )

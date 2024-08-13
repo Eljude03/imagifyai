@@ -7,6 +7,14 @@ import User from "@/modals/user.modal"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import {v2 as cloudinary} from 'cloudinary'
+import { getUserById } from "./user.actions"
+
+const populateUser = (query: any) => 
+    query.populate({
+        path: 'author',
+        model: User,
+        select: 'clerkId firstName lastName'
+    })
 
 
 // Add Image
@@ -14,13 +22,15 @@ export async function addImage({image, userId, path}: AddImageParams) {
     try{
         await connectToDatabase()
 
-        const author = await User.findOne({ clerkId: userId})
+        const user = await getUserById(userId)
+
+        const author = await User.findById(user._id);
 
         if(!author) throw new Error("User not found")
 
         const newImage = await Image.create({
             ...image,
-            author: author.clerkId
+            author: author._id
         })
 
         revalidatePath(path)
@@ -40,7 +50,9 @@ export async function updateImage({image, userId, path}: UpdateImageParams) {
 
         const imageToUpdate = await Image.findById(image._id)
 
-        if(!imageToUpdate || imageToUpdate.author.toHexString() !== userId) {
+        const user = await getUserById(userId)
+
+        if(!imageToUpdate || imageToUpdate.author.toHexString() !== user._id) {
             throw new Error("Unauthorized. Image not found")
         }
 
@@ -76,7 +88,7 @@ export async function getImageById(imageId: string) {
     try{
         await connectToDatabase()
 
-        const image = await Image.findById(imageId)
+        const image = await populateUser(Image.findById(imageId))
 
         if(!image) throw new Error("Image not found")
 
@@ -126,7 +138,7 @@ export async function getAllImages({limit = 9, page = 1, searchQuery = ''}: {
 
         const skipAmount = (Number(page) - 1) * limit;
 
-        const images = await Image.find(query)
+        const images = await populateUser(Image.find(query))
             .sort({updatedAt: -1})
             .skip(skipAmount)
             .limit(limit);
