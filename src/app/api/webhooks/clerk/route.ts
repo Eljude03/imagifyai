@@ -90,7 +90,7 @@ if (eventType === "user.updated") {
   const user = {
     firstName: first_name,
     lastName: last_name,
-    username: username!,
+    userName: username!,
     photo: image_url,
   };
 
