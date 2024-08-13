@@ -29,6 +29,8 @@ import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } fro
 import { CustomField } from './CustomField'
 import { AspectRatioKey, debounce, deepMergeObjects } from '@/lib/utils'
 import { updateCredits } from '@/actions/user.actions'
+import MediaUploader from './MediaUploader'
+import TransformedImage from './TransformedImage'
 
 export const formSchema = z.object({
   title: z.string(),
@@ -201,6 +203,32 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
             )}
           </div>
         )}
+
+        <div className='media-uploader-field'>
+            <CustomField 
+            control={form.control}
+            name='publicId'
+            className='flex size-full flex-col'
+            render={({field}) => (
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publicId={field.value}
+                image={image}
+                type={type}
+              />
+            )}
+            />
+
+            <TransformedImage
+              image={image}
+              type={type}
+              title={form.getValues().title}
+              isTransforming={isTransforming}
+              setIsTransforming={setIsTransforming}
+              transformationConfig={transformationConfig}
+            />
+        </div>
 
         <div className="flex flex-col gap-4">
           <Button
