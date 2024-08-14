@@ -2,7 +2,6 @@
 import { getAllImages } from '@/actions/image.actions'
 import { Collection } from '@/components/shared/Collection'
 import { navLinks } from '@/constants'
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
@@ -15,7 +14,6 @@ const Home = async ({searchParams}: SearchParamProps) => {
 
   return (
     <div>
-      <SignedIn>
         <section className='home'>
           <h1 className='home-heading'>
             Unleash Your Creative Vision with ImagifyAI
@@ -41,10 +39,6 @@ const Home = async ({searchParams}: SearchParamProps) => {
           page={page}
           />
         </section>
-      </SignedIn>
-      <SignedOut>
-        Login Page
-      </SignedOut>
       </div>
   )
 }
