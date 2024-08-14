@@ -13,7 +13,7 @@ const populateUser = (query: any) =>
     query.populate({
         path: 'author',
         model: User,
-        select: 'clerkId firstName lastName'
+        select: 'clerkId firstName lastName _id'
     })
 
 
