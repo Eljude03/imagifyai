@@ -62,7 +62,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
     }
 
     fetchUser()
-  }, [])
+  }, [userId])
  
 
     const initialValues = data && action === 'Update' ? {
@@ -163,20 +163,18 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
 
       const onInputChangeHandler = (fieldName: string, value: string, type: string, onChangeField: (value: string) => void) => {
         debounce(() => {
-          setNewTransformation((prevState : any) => ({
+          setNewTransformation((prevState: any) => ({
             ...prevState,
             [type]: {
               ...prevState?.[type],
-              [fieldName === 'prompt' ? 'prompt' : 'to']: value
+              [fieldName === 'prompt' ? 'prompt' : 'to' ]: value 
             }
           }))
-
-        }, 1000)()
-
-        return onChangeField(value);
+        }, 1000)();
+          
+        return onChangeField(value)
       }
-
-      // TODO: return to update credits
+      
       const onTransformHandler = async () => {
         setIsTransforming(true)
 
@@ -200,7 +198,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal/>}
+        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
         <CustomField
           control={form.control}
           name="title"
@@ -218,8 +216,9 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
             render={({ field }) => (
               <Select
                 onValueChange={(value) => {
-                  onSelectFieldHandler(value, field.onChange)}}
-                  value={field.value}
+                  onSelectFieldHandler(value, field.onChange);
+                }}
+                value={field.value}
               >
                 <SelectTrigger className="select-field">
                   <SelectValue placeholder="Select size" />
@@ -237,7 +236,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
         )}
 
         {(type === "remove" || type === "recolor") && (
-          <div className="propmt field flex flex-col gap-6">
+          <div className="prompt-field">
             <CustomField
               control={form.control}
               name="prompt"
@@ -265,7 +264,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
               <CustomField
                 control={form.control}
                 name="color"
-                formLabel="Replacement color"
+                formLabel="Replacement Color"
                 className="w-full"
                 render={({ field }) => (
                   <Input
@@ -273,7 +272,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
                     className="input-field"
                     onChange={(e) =>
                       onInputChangeHandler(
-                        "prompt",
+                        "color",
                         e.target.value,
                         "recolor",
                         field.onChange
@@ -286,12 +285,12 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
           </div>
         )}
 
-        <div className='media-uploader-field'>
-            <CustomField 
+        <div className="media-uploader-field">
+          <CustomField
             control={form.control}
-            name='publicId'
-            className='flex size-full flex-col'
-            render={({field}) => (
+            name="publicId"
+            className="flex size-full flex-col"
+            render={({ field }) => (
               <MediaUploader
                 onValueChange={field.onChange}
                 setImage={setImage}
@@ -300,16 +299,16 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
                 type={type}
               />
             )}
-            />
+          />
 
-            <TransformedImage
-              image={image}
-              type={type}
-              title={form.getValues().title}
-              isTransforming={isTransforming}
-              setIsTransforming={setIsTransforming}
-              transformationConfig={transformationConfig}
-            />
+          <TransformedImage
+            image={image}
+            type={type}
+            title={form.getValues().title}
+            isTransforming={isTransforming}
+            setIsTransforming={setIsTransforming}
+            transformationConfig={transformationConfig}
+          />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -319,7 +318,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
             type="button"
             onClick={onTransformHandler}
           >
-            {isTransforming? 'Transforming...' : 'Apply transformation'}
+            {isTransforming ? "Transforming..." : "Apply transformation"}
           </Button>
 
           <Button
@@ -327,7 +326,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
             disabled={isSubmitting}
             type="submit"
           >
-            {isSubmitting? 'Submitting...' : 'Save'}
+            {isSubmitting ? "Submitting..." : "Save"}
           </Button>
         </div>
       </form>
