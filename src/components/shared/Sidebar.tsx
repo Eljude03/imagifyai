@@ -88,7 +88,9 @@ const Sidebar = () => {
               <Link href="/sign-in">Login</Link>
             </Button>
             <div>
-              Credits to JavaSript Mastery. Youtube
+              <p>
+                Credits to JavaSript Mastery. Youtube
+                </p>
             </div>
           </SignedOut>
         </nav>
