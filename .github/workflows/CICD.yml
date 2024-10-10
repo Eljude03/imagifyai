@@ -43,4 +43,4 @@ jobs:
         run: |
           docker stop imagifyai || true
           docker rm imagifyai || true
-          docker run -d --name imagifyai -p 3044:80 ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
+          docker run -d --name imagifyai -p 3033:80 ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
