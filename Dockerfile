@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY .env.local .env.local
+COPY .env.local ./
 
 COPY . .
 
