@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build Next.js app
+        run: npm run build
+
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
@@ -40,4 +43,4 @@ jobs:
         run: |
           docker stop imagifyai || true
           docker rm imagifyai || true
-          docker run -d --name imagifyai -p 3033:80 ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
+          docker run -d --name imagifyai -p 3033:3000 ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
