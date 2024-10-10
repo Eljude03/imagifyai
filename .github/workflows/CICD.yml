@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build React app
+      - name: Build NextJs app
         run: npm run build
 
       - name: Login to Docker Hub
@@ -43,21 +43,22 @@ jobs:
         run: |
           docker stop imagifyai || true
           docker rm imagifyai || true
-          docker run -d --name imagifyai -p 3033:3000 \ 
-          -e NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
-          -e CLERK_SECRET_KEY="${{ secrets.CLERK_SECRET_KEY }}" \
-          -e NEXT_PUBLIC_SERVER_URL="${{ secrets.NEXT_PUBLIC_SERVER_URL }}" \
-          -e NEXT_PUBLIC_CLERK_SIGN_IN_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}" \
-          -e NEXT_PUBLIC_CLERK_SIGN_UP_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}" \
-          -e NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL }}" \
-          -e NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL }}" \
-          -e WEBHOOK_SECRET="${{ secrets.WEBHOOK_SECRET }}" \
-          -e MONGODB_URL="${{ secrets.MONGODB_URL }}" \
-          -e CLOUDINARY_API_SECRET="${{ secrets.CLOUDINARY_API_SECRET }}" \
-          -e CLOUDINARY_API_KEY="${{ secrets.CLOUDINARY_API_KEY }}" \
-          -e NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}" \
-          -e NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" \
-          -e STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY }}" \
-          -e STRIPE_WEBHOOK_SECRETE="${{ secrets.STRIPE_WEBHOOK_SECRETE }}" \
-          ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
+          docker run -d --name imagifyai -p 3033:3000 \
+            -e NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
+            -e CLERK_SECRET_KEY="${{ secrets.CLERK_SECRET_KEY }}" \
+            -e NEXT_PUBLIC_SERVER_URL="${{ secrets.NEXT_PUBLIC_SERVER_URL }}" \
+            -e NEXT_PUBLIC_CLERK_SIGN_IN_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}" \
+            -e NEXT_PUBLIC_CLERK_SIGN_UP_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}" \
+            -e NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL }}" \
+            -e NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL }}" \
+            -e WEBHOOK_SECRET="${{ secrets.WEBHOOK_SECRET }}" \
+            -e MONGODB_URL="${{ secrets.MONGODB_URL }}" \
+            -e CLOUDINARY_API_SECRET="${{ secrets.CLOUDINARY_API_SECRET }}" \
+            -e CLOUDINARY_API_KEY="${{ secrets.CLOUDINARY_API_KEY }}" \
+            -e NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}" \
+            -e NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" \
+            -e STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY }}" \
+            -e STRIPE_WEBHOOK_SECRET="${{ secrets.STRIPE_WEBHOOK_SECRET }}" \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/imagifyai:1.0
+
           
